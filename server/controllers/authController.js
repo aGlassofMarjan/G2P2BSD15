@@ -15,7 +15,7 @@ class AuthController {
       });
     } catch (error) {
       console.log(error);
-      next(error); //400
+      next(error); 
     }
   }
 
@@ -84,9 +84,8 @@ class AuthController {
       });
 
       res.status(200).json({ access_token });
-    } catch (err) {
-      console.log(err);
-      next(err);
+    } catch (error) {
+      next(error);
     }
   }
 }
