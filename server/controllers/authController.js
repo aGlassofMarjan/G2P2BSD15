@@ -5,8 +5,8 @@ const { signToken } = require("../helpers/jwt");
 class AuthController {
   static async register(req, res, next) {
     try {
-      const { email, password, phoneNumber, fullName } = req.body;
-      const user = await User.create({ email, password, phoneNumber, fullName });
+      const { email, password, phoneNumber, fullName, profilePict } = req.body;
+      const user = await User.create({ email, password, phoneNumber, fullName, profilePict });
 
       res.status(201).json({
         message: "Success create new user",
