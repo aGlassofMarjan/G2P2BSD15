@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Peer from "simple-peer";
 import io from "socket.io-client";
 
@@ -12,31 +13,30 @@ export default function LandingPage({url}) {
     const [callerSignal, setCallerSignal] = useState();
     const [callAccepted, setCallAccepted] = useState(false);
     const [idToCall, setIdToCall] = useState("");
-    const [callEnded, setCallEnded] = useState(false);
     const [name, setName] = useState("");
     const myVideo = useRef();
     const userVideo = useRef();
     const connectionRef = useRef();
-
-
+    const navigate = useNavigate()
 
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-            setStream(stream);
-            myVideo.current.srcObject = stream;
+          setStream(stream);
+          myVideo.current.srcObject = stream;
         });
     
         socket.on("me", (id) => {
-            setMe(id);
+          setMe(id);
         });
     
         socket.on("callUser", (data) => {
-            setReceivingCall(true);
-            setCaller(data.from);
-            setName(data.name);
-            setCallerSignal(data.signal);
+          setReceivingCall(true);
+          setCaller(data.from);
+          setName(data.name);
+          setCallerSignal(data.signal);
         });
-    }, []);
+      }, []);
+    
 
     const callUser = (id) => {
 
@@ -67,6 +67,7 @@ export default function LandingPage({url}) {
         });
     
         connectionRef.current = peer;
+        navigate('/meet')
     };
 
     const answerCall = () => {
@@ -85,6 +86,8 @@ export default function LandingPage({url}) {
     
         peer.signal(callerSignal);
         connectionRef.current = peer;
+
+        navigate('/meet')
     };
     
     const leaveCall = () => {
@@ -131,6 +134,7 @@ export default function LandingPage({url}) {
                             </div>
                             
                             <button
+                                onClick={() => callUser(idToCall)}
                                 className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-400">
                                     Join</button>
                         </div>
