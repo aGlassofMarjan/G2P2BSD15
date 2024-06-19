@@ -105,12 +105,12 @@ export default function LandingPage({url}) {
                             <p className="text-gray-700 mb-6">Connect, collaborate, and celebrate from anywhere with Google Meet</p>
                         </div>
                         
-                        <div className="flex items-center space-x-4 mb-4">
+                        <div className="lg:flex lg:items-center lgspace-x-4 mb-4 sm:block sm:w-full">
                             {/* <button className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg flex items-center space-x-2">
                                 <span>New meeting</span>
                             </button> */}
                             <button
-                                className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg flex items-center space-x-2"
+                                className="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg flex items-center space-x-2 lg:w-auto sm:w-full w-full"
                                 onClick={() => navigator.clipboard.writeText(me)}
                             >
                                 <img src="./icons/videoCall.svg" alt=""/>
@@ -123,19 +123,19 @@ export default function LandingPage({url}) {
                                     placeholder="Name"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className="border border-gray-300 rounded-lg py-2 px-4 w-64"/>
+                                    className="border border-gray-300 rounded-lg py-2 px-4 lg:w-auto sm:w-full w-full"/>
                                 <input 
                                     id="filled-basic"
                                     type="text"
                                     value={idToCall}
                                     onChange={(e) => setIdToCall(e.target.value)}
                                     placeholder="Enter a code or link"
-                                    className="border border-gray-300 rounded-lg py-2 px-4 w-64"/>
+                                    className="border border-gray-300 rounded-lg py-2 px-4 lg:w-auto sm:w-full w-full"/>
                             </div>
                             
                             <button
                                 onClick={() => callUser(idToCall)}
-                                className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-400">
+                                className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-400 lg:w-auto sm:w-full w-full">
                                     Join</button>
                         </div>
                         <p className="text-gray-600">
@@ -154,9 +154,9 @@ export default function LandingPage({url}) {
                     </main>
                     <main className="flex items-center justify-center h-screen text-center p-4">
                         <div className="flex justify-center w-full">
-                            <img className="w-96"
+                            <img className="lg:w-72 md:w-52 sm:w-28 w-14"
                                 src="https://www.gstatic.com/meet/premium_carousel_03_4f42ed34b9d0637ce38be87ecd8d1ca0.gif" alt=""/>
-                            <img className="w-96"
+                            <img className="lg:w-72 md:w-52 sm:w-28 w-14"
                                 src="https://www.gstatic.com/meet/premium_carousel_02_174e55774263506d1280ce6552233189.gif" alt=""/>
                         </div>
                     </main>
