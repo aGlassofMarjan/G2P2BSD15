@@ -4,7 +4,7 @@ import Peer from "simple-peer";
 import io from "socket.io-client";
 
 export default function LandingPage({url}) {
-    const socket = io.connect("http://localhost:5001");
+    const socket = io.connect(`${url}`);
 
     const [me, setMe] = useState("");
     const [stream, setStream] = useState();
@@ -67,7 +67,7 @@ export default function LandingPage({url}) {
         });
     
         connectionRef.current = peer;
-        navigate('/meet')
+         navigate('/meet')
     };
 
     const answerCall = () => {

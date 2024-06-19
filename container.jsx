@@ -39,11 +39,6 @@ function App() {
 
   const callUser = (id) => {
 
-    if (!stream) {
-      console.error('Stream is not available.');
-      return;
-    }
-    
     const peer = new Peer({
       initiator: true,
       trickle: false,
