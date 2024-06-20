@@ -9,11 +9,11 @@ import io from "socket.io-client";
 import Toastify from "toastify-js"
 import TouchDown from "../views/TouchDown";
 
-const socket = io("http://35.247.152.245", {
+const socket = io("https://gp2.nfadhilahe.online/", {
     autoConnect: false,
 });
 
-const url = "http://35.247.152.245";
+const url = "https://gp2.nfadhilahe.online/";
 
 const router = createBrowserRouter([
     {
