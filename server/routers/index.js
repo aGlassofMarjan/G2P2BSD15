@@ -7,7 +7,6 @@ const Controller = require('../controllers/controller')
 
 router.post('/login', AuthController.login)
 router.post('/register', AuthController.register)
-// router.post('/google-login', AuthController.googleLogin)
 
 router.use(authentication)
 router.get('/user', Controller.readUser)

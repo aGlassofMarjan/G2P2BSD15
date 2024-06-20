@@ -3,6 +3,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Toastify from "toastify-js";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode'
 
 export default function LoginPage({ url, socket }) {
   const [email, setEmail] = useState("");
@@ -10,7 +12,7 @@ export default function LoginPage({ url, socket }) {
   const navigate = useNavigate()
 
   console.log(socket, '<<<');
-  
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -29,7 +31,7 @@ export default function LoginPage({ url, socket }) {
       socket.auth = {
         fullName: localStorage.fullName,
       };
-      
+
       navigate("/home");
 
       Toastify({
@@ -66,6 +68,7 @@ export default function LoginPage({ url, socket }) {
       }).showToast();
     }
   }
+
 
   return (
     <>
@@ -118,6 +121,27 @@ export default function LoginPage({ url, socket }) {
                 <button className="text-white px-6 py-2 rounded-full bg-blue-600 hover:bg-blue-700">
                   Next
                 </button>
+                <div id="buttonDiv" type="button">
+                  <GoogleLogin
+                    onSuccess={credentialResponse => {
+                      const credentialResponseDecoded = jwtDecode(
+                        credentialResponse.credential
+                      )
+                      // console.log(credentialResponse.credential);
+                      // console.log(credentialResponseDecoded);
+                      localStorage.setItem("token", credentialResponse.credential);
+                      localStorage.setItem("fullName", credentialResponseDecoded.name);
+                      localStorage.setItem("email", credentialResponseDecoded.email);
+                      localStorage.setItem("profilePict", credentialResponseDecoded.picture);
+                      // localStorage.setItem("phoneNumber", data.phoneNumber);
+
+                      navigate('/home')
+                    }}
+                    onError={() => {
+                      console.log('Login Failed');
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </form>
