@@ -11,7 +11,7 @@ const cors = require("cors");
 const port = process.env.PORT || 3000
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:5173"
+    origin: "https://g2-p2-bsd-15.vercel.app"
   },
 });
 
