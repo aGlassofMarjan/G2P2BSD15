@@ -10,6 +10,7 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import { SocketContext } from '../context/Context';
 import { useNavigate } from "react-router-dom";
 import Peer from "simple-peer";
+import VoiceInput from "../components/voiceInput";
 
 export default function MainPage({ url, socket }) {
   //video

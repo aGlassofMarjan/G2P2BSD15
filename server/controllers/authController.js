@@ -1,6 +1,8 @@
 const { User } = require("../models");
-const { compare } = require("../helpers/bcrypt");
+const { compare, hash } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client();
 
 class AuthController {
   static async register(req, res, next) {
@@ -55,6 +57,7 @@ class AuthController {
       next(error);
     }
   }
+
 
   // static async googleLogin(req, res, next) {
   //   try {
