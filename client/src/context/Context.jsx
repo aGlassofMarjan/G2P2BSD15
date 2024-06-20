@@ -5,7 +5,7 @@ import Peer from 'simple-peer';
 const SocketContext = createContext({
   myVideo: {},
   userVideo: {},
-  name: {},
+  name: (""),
   setName: {},
   connectionRef: {},
   stream: {},
@@ -46,10 +46,10 @@ const ContextProvider = ({ children }) => {
     });
 
     //tambahin peer untuk set ref dan statenya
-
     // socket.on('callUser', ({ from, name: callerName, signal }) => {
     //   // Jadinya ini ga bisa kepake ke sebelah !
     //   setCall({ isReceivingCall: true, from, name: callerName, signal });
+    //   peer.signal(call.signal);
     // });
 
     peer.on('stream', (currentStream) => {
@@ -57,8 +57,7 @@ const ContextProvider = ({ children }) => {
       userVideo.current.srcObject = currentStream;
     });
 
-    // peer.signal(call.signal);
-
+  
     connectionRef.current = peer;
   };
 

@@ -144,7 +144,6 @@ export default function MainPage({ url, socket }) {
                 </div>
               );
             })}
-
             <div className="flex items-end justify-end gap-2.5 mb-5"></div>
           </div>
 
