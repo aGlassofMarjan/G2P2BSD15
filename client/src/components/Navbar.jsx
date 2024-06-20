@@ -2,9 +2,15 @@ import apps from '../assets/icons/apps.svg'
 import settings from '../assets/icons/settings.svg'
 import help from '../assets/icons/help.svg'
 import feedback from '../assets/icons/feedback.svg'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 export default function Navbar() {
-    
+    const navigate = useNavigate()
+    function handleLogout(){
+        localStorage.clear()
+        navigate('/login')
+    }
     return (
         <>
             <header className="flex justify-between items-center p-4 border-b border-gray-300">
@@ -14,6 +20,7 @@ export default function Navbar() {
                     <p className='ml-2 underline text-xl text-gray-700'>Meet</p>
                 </div>
                 <div className="flex items-center space-x-4">
+                    <button onClick={handleLogout} className="text-sm">Logout</button>
                     <span className="text-sm">7:40 PM • Tue, Jun 18</span>
                     <button className="text-gray-600">
                         <img src={help} alt=""/>
@@ -33,7 +40,7 @@ export default function Navbar() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                 d="M3 7a4 4 0 014-4h10a4 4 0 014 4v10a4 4 0 01-4 4H7a4 4 0 01-4-4V7z"></path>
                         </svg> */}
-                        <img className="rounded-full w-10 h-10 object-cover" src="https://images.unsplash.com/photo-1517422361159-d84fd5600d22?q=80&w=2231&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+                        <img className="rounded-full w-10 h-10 object-cover" src={localStorage.profilePict} alt="" />
                     </button>
                 </div>
             </header>

@@ -42,11 +42,14 @@ class AuthController {
       };
       
       const token = signToken(payload);
-      console.log(token, '<<<<');
+      // console.log(token, '<<<<');
 
       res.status(200).json({
         token,
         email: user.email,
+        fullName: user.fullName,
+        profilePict: user.profilePict,
+        phoneNumber: user.phoneNumber
       });
     } catch (error) {
       next(error);

@@ -1,11 +1,10 @@
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Peer from "simple-peer";
 import io from "socket.io-client";
 
-export default function LandingPage({url}) {
-    const socket = io.connect(`${url}`);
-
+export default function LandingPage({url, socket}) {
     const [me, setMe] = useState("");
     const [stream, setStream] = useState();
     const [receivingCall, setReceivingCall] = useState(false);
@@ -20,6 +19,7 @@ export default function LandingPage({url}) {
     const navigate = useNavigate()
 
     useEffect(() => {
+        socket.connect();
         navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
           setStream(stream);
           myVideo.current.srcObject = stream;
@@ -32,9 +32,15 @@ export default function LandingPage({url}) {
         socket.on("callUser", (data) => {
           setReceivingCall(true);
           setCaller(data.from);
-          setName(data.name);
+          setName(localStorage.fullName                                                                           );
           setCallerSignal(data.signal);
         });
+
+        return () => {
+            socket.off("me")
+            socket.off("callUser")
+            socket.disconnect()
+        }
       }, []);
     
 
@@ -90,10 +96,6 @@ export default function LandingPage({url}) {
         navigate('/meet')
     };
     
-    const leaveCall = () => {
-        setCallEnded(true);
-        connectionRef.current.destroy();
-    };
 
     return(
         <>
@@ -117,13 +119,6 @@ export default function LandingPage({url}) {
                                 Copy Meeting ID
                             </button>
                             <div>
-                                <input 
-                                    id="filled-basic"
-                                    type="text"
-                                    placeholder="Name"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    className="border border-gray-300 rounded-lg py-2 px-4 lg:w-auto sm:w-full w-full"/>
                                 <input 
                                     id="filled-basic"
                                     type="text"
