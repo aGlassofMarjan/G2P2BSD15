@@ -8,11 +8,11 @@ import RegisterPage from "../views/RegisterPage";
 import io from "socket.io-client";
 import Toastify from "toastify-js"
 
-const socket = io("http://localhost:5001", {
+const socket = io("http://35.247.152.245", {
   autoConnect: false,
 });
 
-const url = "http://localhost:5001";
+const url = "http://35.247.152.245";
 
 const router = createBrowserRouter([
   {
