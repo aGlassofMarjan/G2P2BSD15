@@ -11,7 +11,7 @@ const cors = require("cors");
 const port = process.env.PORT || 3000
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://g2-p2-bsd-15.vercel.app"
+    origin: "http://localhost:5173"
   },
 });
 
@@ -22,28 +22,27 @@ app.use(express.json());
 app.use(router);
 
 io.on("connection", (socket) => {
+  //send ke semua connected user, me yg isinya socket id
+	socket.emit("me", socket.id);
 
-	//video
-	console.log("a user connected:", socket.id);
-  socket.emit("me", socket.id);
+	socket.on("disconnect", () => {
+		socket.broadcast.emit("callEnded")
+	});
 
-  socket.on("disconnect", () => {
-    socket.broadcast.emit("callEnded");
-  });
+  //kalo ada yg init calluser, server nerima data ini
+	socket.on("callUser", ({ userToCall, signalData, from, name }) => {
+    //emit ke org yg mau di call, isinya signal sm info penelpon
+		io.to(userToCall).emit("callUser", { signal: signalData, from, name });
+	});
 
-  socket.on("callUser", (data) => {
-    io.to(data.userToCall).emit("callUser", {
-      signal: data.signalData,
-      from: data.from,
-      name: data.name,
-    });
-  });
+  //kalo ada yg aswercall
+	socket.on("answerCall", (data) => {
+    //dia ngirim signal data ke caller
+    //data.to adalah yg nelpon
+		io.to(data.to).emit("callAccepted", data.signal)
+	});
 
-  socket.on("answerCall", (data) => {
-    io.to(data.to).emit("callAccepted", data.signal);
-  });
-
-  //chat
+  //chat 
   if (socket.handshake.auth) {
     console.log("fullName : " + socket.handshake.auth.fullName);
   }
@@ -55,5 +54,7 @@ io.on("connection", (socket) => {
     });
   });
 });
+
+
 
 server.listen(port, () => console.log("server is running on port", port));

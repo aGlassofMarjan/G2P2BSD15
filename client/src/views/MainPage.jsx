@@ -6,44 +6,30 @@ import end from "../assets/icons/end.svg";
 import chat from "../assets/icons/chat.svg";
 import info from "../assets/icons/info.svg";
 import io from "socket.io-client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
+import { SocketContext } from '../context/Context';
 import { useNavigate } from "react-router-dom";
 import Peer from "simple-peer";
 
 export default function MainPage({ url, socket }) {
   //video
-  const [stream, setStream] = useState();
-  const myVideo = useRef();
-  const userVideo = useRef();
-  const connectionRef = useRef();
-  const navigate = useNavigate();
+  const { callAccepted, name, myVideo, userVideo, callEnded, stream, call, leaveCall, setStream, setMe } = useContext(SocketContext);
 
-  //call
+  //chat
   const [messageSent, setMessageSent] = useState("");
   const [messages, setMessages] = useState([]);
 
-  //video function
   useEffect(() => {
-    socket.connect();
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-      setStream(stream);
-      myVideo.current.srcObject = stream;
-      userVideo.current.srcObject = stream
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    .then((currentStream) => {
+      setStream(currentStream);
+      
+      myVideo.current.srcObject = currentStream;
+      userVideo.current.srcObject = currentStream
     });
-
-    return () => {
-        socket.disconnect()
-    }
   }, []);
-
-
+  
   //chat function
-  function handleSubmit(e) {
-    e.preventDefault();
-    socket.emit("message:new", messageSent);
-  }
-  console.log(localStorage.fullName);
-
   useEffect(() => {
     // ngeset auth buat socketnya
     socket.auth = {
@@ -65,14 +51,15 @@ export default function MainPage({ url, socket }) {
     };
   }, []);
 
-  function leaveCall() {
-    navigate("/home");
-  };
+  function handleSubmit(e) {
+    e.preventDefault();
+    socket.emit("message:new", messageSent);
+  }
 
   return (
     <>
       <div className="flex">
-        <div className="flex justify-center w-screen h-screen ">
+        {/* <div className="flex justify-center w-screen h-screen ">
           <div className="mb-8 grid grid-cols-2 gap-4 p-32 w-full justify-center">
             <div className="flex video-container">
               <div className="video">
@@ -94,6 +81,26 @@ export default function MainPage({ url, socket }) {
               </div>
             </div>
           </div>
+        </div> */}
+         <div className="flex">
+          {stream && (
+            <div>
+              <div >
+                <span >{name || 'Name'}</span>
+                <video playsInline muted ref={myVideo} autoPlay />
+              </div>
+            </div>
+          )}
+          {JSON.stringify(callAccepted)}
+          {JSON.stringify( callEnded)}
+          {callAccepted && !callEnded && (
+            <div>  
+              <div >
+                <span >{call.name || 'Name'}</span>
+                <video playsInline ref={userVideo} autoPlay />
+              </div>  
+            </div>
+          )}
         </div>
         <div className="border-2 w-1/3 p-2">
           <div className="overflow-auto h-3/5 pr-5">
